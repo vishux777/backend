@@ -1,12 +1,16 @@
 from flask import Flask, request, jsonify
    import requests
    import os
+   from flask_cors import CORS
 
    app = Flask(__name__)
 
+   # Enable CORS for requests from myclass.lpu.in and its subdomains
+   CORS(app, resources={r"/api/mistral": {"origins": ["https://myclass.lpu.in", "https://*.lpu.in"]}})
+
    # Mistral API configuration
    MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
-   MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")  # Set this in Vercel environment variables
+   MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 
    @app.route("/api/mistral", methods=["POST"])
    def proxy_mistral():
@@ -22,7 +26,7 @@ from flask import Flask, request, jsonify
                "Authorization": f"Bearer {MISTRAL_API_KEY}"
            }
            response = requests.post(MISTRAL_API_URL, headers=headers, json=data)
-           response.raise_for_status()  # Raise an error for bad status codes
+           response.raise_for_status()
 
            # Return Mistral's response to the client
            return jsonify(response.json())
