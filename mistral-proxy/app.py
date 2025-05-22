@@ -4,9 +4,7 @@ from flask import Flask, request, jsonify
    from flask_cors import CORS
 
    app = Flask(__name__)
-
-   # Enable CORS for requests from myclass.lpu.in and its subdomains
-   CORS(app, resources={r"/api/mistral": {"origins": ["https://myclass.lpu.in", "https://*.lpu.in"]}})
+   CORS(app, resources={r"/api/mistral": {"origins": ["https://example.com"]}})
 
    # Mistral API configuration
    MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
